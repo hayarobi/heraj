@@ -10,5 +10,5 @@ dependencies {
   api project(":core:annotation")
 
   implementation "com.google.guava:guava"
-  implementation "org.bouncycastle:bcpkix-jdk15on:${bouncyCastleVersion}"
+  implementation "org.bouncycastle:bcpkix-jdk18on:${bouncyCastleVersion}"
 }

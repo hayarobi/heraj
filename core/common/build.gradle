@@ -12,5 +12,5 @@ dependencies {
 
   implementation "com.google.guava:guava"
   implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
-  implementation "org.bouncycastle:bcprov-jdk15on:${bouncyCastleVersion}"
+  implementation "org.bouncycastle:bcprov-jdk18on:${bouncyCastleVersion}"
 }
