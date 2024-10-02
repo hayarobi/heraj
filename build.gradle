@@ -19,11 +19,6 @@ def javaLibraryProjects = [
 
 apply from: 'gradle/jacoco.gradle'
 
-subprojects {
-  apply plugin: 'java'
-}
-
-
 // root project
 project(":") {
   // root project is for aggregated javadocs and coverage report only

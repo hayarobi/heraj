@@ -79,8 +79,8 @@ repositories {
 compileJava.options.encoding = "UTF-8"
 compileTestJava.options.encoding = "UTF-8"
 
-sourceCompatibility = sourceJavaVersion
-targetCompatibility = targetJavaVersion
+//sourceCompatibility = sourceJavaVersion
+//targetCompatibility = targetJavaVersion
 
 task sourceJar(type: Jar) {
   from sourceSets.main.allJava

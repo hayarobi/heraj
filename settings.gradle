@@ -2,9 +2,9 @@
  * @copyright defined in LICENSE.txt
  */
 pluginManagement {
-    plugins {
-        id 'jacoco'
-    }
+//    plugins {
+//        id 'jacoco'
+//    }
 }
 
 rootProject.name = 'heraj'
