@@ -17,48 +17,8 @@ def javaLibraryProjects = [
     project('client:smart-contract')
 ]
 
-apply from: 'gradle/jacoco.gradle'
-
 // root project
 project(":") {
   // root project is for aggregated javadocs and coverage report only
   jar.enabled = false
-  javadoc.enabled = false
-  javadocJar.enabled = false
-  javadoc.enabled = false
-  sourceJar.enabled = false
-
-//  task allcoverage(type: JacocoReport) {
-//    def targetProjects = javaLibraryProjects.findAll {
-//      it.name != 'annotation' && it.name != 'protobuf'
-//    }
-//    dependsOn = targetProjects.collect{it.getTasksByName('coverage',false)}
-//    getSourceDirectories().setFrom(targetProjects.sourceSets.main.allSource.srcDirs)
-//    getClassDirectories().setFrom(targetProjects.sourceSets.main.output.classesDirs)
-//    getExecutionData().setFrom(targetProjects.collect{it.getTasksByName('jacocoTestReport', false).executionData})
-//    reports {
-//      html.required = true
-//      xml.required = true
-//      xml.destination file("${buildDir}/reports/jacoco/report.xml")
-//      csv.required = false
-//    }
-//    afterEvaluate {
-//      getClassDirectories().setFrom(classDirectories.files.collect {
-//        fileTree(dir: it, exclude: ['types/**'])
-//      })
-//    }
-//  }
-
-  task alljavadoc(type: Javadoc, group: 'Documentation') {
-    def targetProjects = javaLibraryProjects.findAll {
-      it.name != 'protobuf'
-    }
-    source targetProjects.collect {it.sourceSets.main.allJava }
-    classpath = files(targetProjects.collect { it.sourceSets.main.compileClasspath })
-    destinationDir = file("${buildDir}/docs/javadoc")
-    if (java.toolchain.languageVersion.get().canCompileOrRun(JavaLanguageVersion.of("8"))) {
-      options.addStringOption('Xwerror', '-quiet')
-    }
-  }
-
 }
