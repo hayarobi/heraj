@@ -4,61 +4,48 @@
 
 package hera.api.model;
 
-import static hera.util.BytesValueUtils.trimPrefix;
-import static hera.util.IoUtils.from;
-import static hera.util.ValidationUtils.assertNotNull;
-import static java.util.Arrays.asList;
-import static java.util.Collections.emptyList;
-import static java.util.Collections.unmodifiableList;
-
 import hera.annotation.ApiAudience;
 import hera.annotation.ApiStability;
-import hera.api.encode.Decoder;
 import hera.exception.HerajException;
-import hera.util.BytesValueUtils;
-import java.io.StringReader;
-import java.util.List;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.util.List;
+
+import static hera.util.ValidationUtils.assertNotNull;
+import static java.util.Collections.unmodifiableList;
+
+/**
+ * Base Class for deploying smart contract
+ */
 @ApiAudience.Public
 @ApiStability.Unstable
 @Getter
 @ToString
 @EqualsAndHashCode
-public class ContractDefinition implements Payload {
+public abstract class ContractDefinition implements Payload {
 
-  public static final byte PAYLOAD_VERSION = (byte) 0xC0;
+  public static final byte CONTRACT_VERSION_PREFIX = (byte) 0xC0;
 
-  public static ContractDefinitionWithNothing newBuilder() {
-    return new ContractDefinition.Builder();
+  public static ContractDefinitionBuilder newBuilder() {
+    return new ContractDefinitionBuilder();
   }
 
-  @ToString.Exclude
-  protected final BytesValue decodedContract;
-
-  protected final String encodedContract;
-
+  /**
+   * Version indicates the hard fork version that this object will be used.
+   */
+  protected final ContractVersion version;
   protected final List<Object> constructorArgs;
 
   protected final Aer amount;
 
-  ContractDefinition(final String encodedContract, final List<Object> args,
-      final Aer amount) {
-    assertNotNull(encodedContract, "Encoded contract must not null");
+  protected ContractDefinition(ContractVersion version, final List<Object> args,
+                               final Aer amount) {
     assertNotNull(args, "Args must not null");
     assertNotNull(amount, "Amount must not null");
+    this.version = version;
     try {
-      final Decoder decoder = Decoder.Base58Check;
-      final byte[] raw = from(decoder.decode(new StringReader(encodedContract)));
-      final BytesValue withVersion = BytesValue.of(raw);
-      if (!hasVersion(withVersion)) {
-        throw new HerajException("Encoded contract doesn't have a version");
-      }
-
-      this.decodedContract = trimPrefix(withVersion);
-      this.encodedContract = encodedContract;
       this.constructorArgs = unmodifiableList(args);
       this.amount = amount;
     } catch (HerajException e) {
@@ -68,67 +55,11 @@ public class ContractDefinition implements Payload {
     }
   }
 
-  protected boolean hasVersion(final BytesValue bytesValue) {
-    return BytesValueUtils.validatePrefix(bytesValue, PAYLOAD_VERSION);
+  public abstract BytesValue getRawContract();
+
+  public enum ContractVersion {
+    V3,
+    V4,
+    UNDEFINED;
   }
-
-  public interface ContractDefinitionWithNothing {
-
-    ContractDefinitionWithPayloadReady encodedContract(String encodedContract);
-  }
-
-  public interface ContractDefinitionWithPayloadReady
-      extends hera.util.Builder<ContractDefinition> {
-
-    ContractDefinitionWithPayloadReady constructorArgs(List<Object> args);
-
-    ContractDefinitionWithPayloadReady constructorArgs(Object... args);
-
-    ContractDefinitionWithPayloadReady amount(Aer amount);
-  }
-
-  protected static class Builder
-      implements ContractDefinitionWithNothing, ContractDefinitionWithPayloadReady {
-
-    protected String encodedContract;
-
-    protected List<Object> constructorArgs = emptyList();
-
-    protected Aer amount = Aer.EMPTY;
-
-    @Override
-    public ContractDefinitionWithPayloadReady encodedContract(final String encodedContract) {
-      this.encodedContract = encodedContract;
-      return this;
-    }
-
-    @Override
-    public ContractDefinitionWithPayloadReady amount(final Aer amount) {
-      this.amount = amount;
-      return this;
-    }
-
-    @Override
-    public ContractDefinitionWithPayloadReady constructorArgs(final List<Object> args) {
-      if (null != args) {
-        this.constructorArgs = args;
-      }
-      return this;
-    }
-
-    @Override
-    public ContractDefinitionWithPayloadReady constructorArgs(final Object... args) {
-      if (null != args) {
-        this.constructorArgs = asList(args);
-      }
-      return this;
-    }
-
-    @Override
-    public ContractDefinition build() {
-      return new ContractDefinition(encodedContract, constructorArgs, amount);
-    }
-
-  }
-
 }

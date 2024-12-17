@@ -79,7 +79,7 @@ public abstract class AbstractTestCase {
   protected final ContractTxHash anyContractTxHash = ContractTxHash
       .of(BytesValue.of(randomUUID().toString().getBytes()));
   protected final ContractDefinition anyDefinition = ContractDefinition.newBuilder()
-      .encodedContract(Base58Utils.encodeWithCheck(new byte[]{ContractDefinition.PAYLOAD_VERSION}))
+      .encodedContract(Base58Utils.encodeWithCheck(new byte[]{ContractDefinition.CONTRACT_VERSION_PREFIX}))
       .build();
   protected final ContractInvocation anyInvocation = ContractInvocation.newBuilder()
       .address(anyContractAddress)

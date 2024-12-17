@@ -46,6 +46,7 @@ public class ContractApiIT extends AbstractIT {
 
   protected static AergoClient aergoClient;
 
+  // account AmPVYJc1oH9Szs1zDzd2w6ydNuYKdUAMZD7whghR1Pr2ZRVo569t
   protected final AergoKey rich = AergoKey
       .of("47ExozzhsfEEVp2yhvNGxZxGLXPccRSdBydQeuJ5tmUpBij2M9gTSg2AESV83mGXGvu2U8bPR", "1234");
   protected AergoKey key;

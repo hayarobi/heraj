@@ -92,7 +92,7 @@ public class BytesValueUtils {
   /**
    * Trim prefix of the {@code target}. Return empty byte array if {@code source} is null or empty.
    *
-   * @param source a byte array
+   * @param source a byte arrayo
    * @return byte array with prefix trimmed
    */
   public static byte[] trimPrefix(final byte[] source) {

@@ -33,7 +33,7 @@ public class DeployContractTransactionBuilder implements
   protected final PlainTransactionBuilder delegate = new PlainTransactionBuilder();
 
   protected final PayloadConverter<ContractDefinition> payloadConverter =
-      new ContractDefinitionPayloadConverter();
+      new ContractDefinitionNewPayloadConverter();
 
   protected ContractDefinition contractDefinition;
 

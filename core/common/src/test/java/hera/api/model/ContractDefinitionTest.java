@@ -16,12 +16,12 @@ import org.junit.Test;
 public class ContractDefinitionTest {
 
   protected final String payload =
-      Base58Utils.encodeWithCheck(new byte[]{ContractDefinition.PAYLOAD_VERSION});
+      Base58Utils.encodeWithCheck(new byte[]{ContractDefinition.CONTRACT_VERSION_PREFIX});
 
   @Test
   public void testBuilder() {
     final Object[] args = new Object[]{1, 2, 3};
-    final ContractDefinition expected = new ContractDefinition(payload, asList(args), Aer.ONE);
+    final ContractDefinition expected = new ContractDefinitionV3(payload, asList(args), Aer.ONE);
     final ContractDefinition actual = ContractDefinition.newBuilder()
         .encodedContract(payload)
         .constructorArgs(args)
@@ -33,7 +33,7 @@ public class ContractDefinitionTest {
   @Test
   public void testBuilderWithListArgs() {
     final List<Object> args = asList(new Object[]{1, 2, 3});
-    final ContractDefinition expected = new ContractDefinition(payload, args, Aer.ONE);
+    final ContractDefinition expected = new ContractDefinitionV3(payload, args, Aer.ONE);
     final ContractDefinition actual = ContractDefinition.newBuilder()
         .encodedContract(payload)
         .constructorArgs(args)

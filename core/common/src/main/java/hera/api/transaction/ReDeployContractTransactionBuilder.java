@@ -35,7 +35,7 @@ public class ReDeployContractTransactionBuilder implements
   protected final PlainTransactionBuilder delegate = new PlainTransactionBuilder();
 
   protected final PayloadConverter<ContractDefinition> payloadConverter =
-      new ContractDefinitionPayloadConverter();
+      new ContractDefinitionNewPayloadConverter();
 
   protected ContractDefinition contractDefinition;
 
