@@ -22,6 +22,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * InMemoryKeyStore is an implementation that stores AergoKey in volatile memory.
+ * The keys stored in this keystore will be removed when the process is terminated.
+ */
 @ApiAudience.Private
 @ApiStability.Unstable
 public class InMemoryKeyStore extends AbstractKeyStore implements KeyStore {
@@ -62,6 +66,11 @@ public class InMemoryKeyStore extends AbstractKeyStore implements KeyStore {
 
   @Override
   public Signer load(final Authentication authentication) {
+    return loadAergoKey(authentication);
+  }
+
+  @Override
+  protected AergoKey loadAergoKey(final Authentication authentication) {
     try {
       assertNotNull(authentication, "Authentication must not null");
       logger.debug("Load with authentication: {}", authentication);
@@ -140,6 +149,13 @@ public class InMemoryKeyStore extends AbstractKeyStore implements KeyStore {
       return identities;
     } catch (Exception e) {
       throw converter.convert(e);
+    }
+  }
+
+  @Override
+  public boolean contains(Identity identity) {
+    synchronized (lock) {
+      return this.storedIdentities.contains(identity);
     }
   }
 

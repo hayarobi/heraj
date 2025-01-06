@@ -14,12 +14,17 @@ import hera.key.AergoKey;
 import hera.key.Signer;
 import java.util.List;
 
+/**
+ * Keystore is an abstract interface of the repository that keeps {@link AergoKey}s.
+ * A Keystore can contain multiple AergoKey, which is identified by {@link Authentication}.
+ */
 @ApiAudience.Public
 @ApiStability.Unstable
 public interface KeyStore {
 
   /**
-   * Store an {@code AergoKey} to the keystore.
+   * Add an {@code AergoKey} to the keystore.
+   * This method will throw {@link InvalidAuthenticationException} if the same key was already stored in the keystore.
    *
    * @param authentication an authentication to save key
    * @param key            an aergo key to store
@@ -45,7 +50,7 @@ public interface KeyStore {
   void remove(Authentication authentication);
 
   /**
-   * Export an private key encrypted.
+   * Export a private key in an encrypted form
    *
    * @param authentication an authentication to used in exporting key
    * @param password       a password to encrypt
@@ -60,6 +65,13 @@ public interface KeyStore {
    * @return stored identities
    */
   List<Identity> listIdentities();
+
+  /**
+   * Return whether it contains the key.
+   * @param identity
+   * @return
+   */
+  boolean contains(Identity identity);
 
   /**
    * Store keystore to the {@code path} with {@code password}.
