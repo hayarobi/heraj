@@ -138,7 +138,7 @@ dependencies {
   annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
 
   implementation "org.slf4j:slf4j-api:${slf4jVersion}"
-  runtimeOnly "ch.qos.logback:logback-classic:${logbackVersion}"
+  testRuntimeOnly "ch.qos.logback:logback-classic"
 
   testImplementation "org.projectlombok:lombok:${lombokVersion}"
   testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
